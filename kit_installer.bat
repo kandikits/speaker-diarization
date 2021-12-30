@@ -11,7 +11,7 @@ REM update below path if required
 SET PY_LOCATION="C:\Python"
 SET PY_VERSION=3.9.8
 SET PY_DOWNLOAD_URL=https://www.python.org/ftp/python/3.9.8/python-3.9.8-amd64.exe
-SET REPO_DOWNLOAD_URL=https://github.com/kandikits/speaker-diarization/releases/download/speaker-diarization-master.zip
+SET REPO_DOWNLOAD_URL=https://github.com/kandikits/speaker-diarization/releases/download/v1.0.0/speaker-diarization.zip
 SET REPO_DEPENDENCIES_URL=https://raw.githubusercontent.com/kandikits/speaker-diarization/main/requirements.txt
 SET REPO_NAME=speaker-diarization.zip
 where /q python
