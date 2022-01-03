@@ -11,6 +11,7 @@ REM update below path if required
 SET PY_LOCATION="C:\Python"
 SET PY_VERSION=3.9.8
 SET PY_DOWNLOAD_URL=https://www.python.org/ftp/python/3.9.8/python-3.9.8-amd64.exe
+SET MS_VC_REDIST_URL=https://aka.ms/vs/17/release/vc_redist.x64.exe
 SET REPO_DOWNLOAD_URL=https://github.com/kandikits/speaker-diarization/releases/download/v1.0.0/speaker-diarization.zip
 SET REPO_DEPENDENCIES_URL=https://raw.githubusercontent.com/kandikits/speaker-diarization/main/requirements.txt
 SET REPO_NAME=speaker-diarization.zip
@@ -43,6 +44,7 @@ IF ERRORLEVEL 1 (
 			ECHO==========================================================================
 			ECHO A valid python is detected and hence installing dependent modules ...
 			ECHO==========================================================================
+			CALL :Install_ms_vc_redist
 			bitsadmin /transfer dependency_download_job /download %REPO_DEPENDENCIES_URL% "%cd%\requirements.txt"
 			python -m pip install -r requirements.txt
 			CALL :Download_repo
@@ -89,9 +91,30 @@ IF ERRORLEVEL 1 (
 		EXIT /B 1
 ) ELSE (
 	ECHO==========================================================================
+	CALL :Install_ms_vc_redist
 	ECHO Installing dependent modules ...
 	bitsadmin /transfer dependency_download_job /download %REPO_DEPENDENCIES_URL% "%cd%\requirements.txt"
 	%PY_LOCATION%\python.exe -m pip install -r requirements.txt
+	ECHO==========================================================================
+)
+EXIT /B 0
+
+:Install_ms_vc_redist
+ECHO==========================================================================
+ECHO Downloading Microsoft Visual C++ Redistributable ... 
+ECHO==========================================================================
+REM curl -o vc_redist.x64.exe %MS_VC_REDIST_URL%
+bitsadmin /transfer vc_redist_download_job /download %MS_VC_REDIST_URL% "%cd%\vc_redist.x64.exe"
+ECHO Installing Microsoft Visual C++ Redistributable ...
+VC_redist.x64.exe /q /norestart
+IF ERRORLEVEL 1 (
+		ECHO==========================================================================
+		ECHO There was an error while installing Microsoft Visual C++ Redistributable!
+		ECHO==========================================================================
+		EXIT /B 1
+) ELSE (
+	ECHO==========================================================================
+	ECHO Microsoft Visual C++ Redistributable has been installed
 	ECHO==========================================================================
 )
 EXIT /B 0
